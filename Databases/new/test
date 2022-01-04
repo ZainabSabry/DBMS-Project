@@ -1,0 +1,10 @@
+id : fname : lname : salary : depart
+integer  : string  : string  : integer : string
+7 : zainab : sabry : 5000 : Finance
+13 : ahmed : Zeyad : 8920 : Security
+74 : sandy : Hamdy : 14503 : PR
+24 : zainb : sabry : 5000 : HR
+10 : 8945 : sabry : NULL : Finance
+70 : Zainab: ahmed :8746: PR
+15 : Zainab: NULL : NULL : NULL
+22 : Zainab: ali :15000: DevOPs
