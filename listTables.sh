@@ -16,7 +16,8 @@ case $answer in
 	0) let flag3++ 
 	. ./second.sh
 		;;
-	*) echo "Invalid Option!"
+	*) clear
+		echo "Invalid Option!"
 		;;
 esac
 done
