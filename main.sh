@@ -23,7 +23,7 @@ do
 		5) exit	
 			;;	
 
-		*) echo  "Invalid Option! Please choose again"
+		*)	echo -e "\nInvalid Option! Please choose again"
 			;;
 	esac
 done
