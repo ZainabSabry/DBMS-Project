@@ -31,6 +31,7 @@ do
             read tableName
                 case $tableName in
                     +([a-zA-Z_]*[a-zA-Z0-9_]))	
+                        clear
                         if [ -f ./Databases/$dbname/$tableName ]
                             then
                                 clear
@@ -60,7 +61,8 @@ do
 							;;
 		            0) . ./second.sh
 							;;
-		            *) echo "Invalid input!"
+		            *) clear
+                        echo "Invalid input!"
 							;;
 	            esac
             done
@@ -182,7 +184,8 @@ do
                     		;;
 		            0) . ./second.sh
 							;;
-		            *) echo "Invalid input!"
+		            *) clear
+                        echo "Invalid input!"
 							;;
                 esac
             done
