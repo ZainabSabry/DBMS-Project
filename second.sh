@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-echo "You are now connected to $answer"
+echo "You are now connected to $dbname"
 select option in "Create Table" "List Tables" "Drop Table" "Insert into table" "Select from Table" "Delete from Table" "Update Table" "Go Back to Main Menu" "Exit"
 do
 	case $REPLY in
@@ -22,7 +22,7 @@ do
 			;;
 		9) exit
 			;;
-		*) echo  "Invalid Option! Please choose again"
+		*) echo -e "\nInvalid Option! Please choose again"
 			;;
 	esac
 done
