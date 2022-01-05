@@ -1,0 +1,2 @@
+id : fname : lname : salary : depart
+integer  : string  : string  : integer : string
