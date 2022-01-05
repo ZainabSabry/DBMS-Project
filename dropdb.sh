@@ -40,21 +40,62 @@ read answer
 								echo "Available Databases:"
 								ls -1 ./Databases
 								echo "===================="
-								break
+								sleep 3
+								clear
+								#What to do next
+								while true 
+								do
+									echo -e "1- Drop Another Database\n2- Go Back to Main Menu"
+									echo "Please choose one of the options:"
+									read option
+										case $option in
+											1). ./dropdb.sh
+												;;
+											2) . ./main.sh
+												;;
+											*) clear
+												echo "Invalid Option!"
+												;;
+										esac
+								done
 										;;
 				    "no" | "n") . ./main.sh
 										;;
-						*) echo "Invalid Option!"
+						*) 	clear
+							echo "Invalid Option!"
 										;;
 				esac
 				done
 			else
+				clear
 				echo "This database does not exist!"
+
+				#What to do next
+				while true 
+				do
+					echo -e "1- Enter Another Name\n2- Go Back to Main Menu"
+					echo "Please choose one of the options:"
+					read option
+					case $option in
+						1). ./dropdb.sh
+							;;
+						2) . ./main.sh
+							;;
+						*) clear
+							echo "Invalid Option!"
+							;;
+					esac
+				done
 			fi
 							;;
 		0) . ./main.sh
 							;;
-		*) echo "Invalid input!"
+		*) clear
+			echo "===================="
+			echo "Available Databases:"
+			ls -1 ./Databases
+			echo "===================="
+			echo "Invalid input!"
 							;;
 	esac
 
