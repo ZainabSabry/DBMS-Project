@@ -1,0 +1,4 @@
+id : fname : lname
+integer  : string  : string
+1 : Shaker : Ahmed
+2 : Magdy : NULL

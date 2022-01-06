@@ -35,7 +35,7 @@ read tableName
             declare -a record=()
 			#capture the data type of the primary key
 			pkData=`head -2 ./Databases/$dbname/$tableName | tail -1 | cut -d: -f1`
-
+			pkName=`head -1 ./Databases/$dbname/$tableName | cut -d: -f1`
 			#to save the number of existing primary key, NR using awk END or cat and wc
 			#instead of substracting anything, I will just i at 2
 			typeset -i numPK 
@@ -110,14 +110,14 @@ read tableName
 			do
 				cols[$i-1]=`head -1 ./Databases/$dbname/$tableName | cut -d: -f$i`
 			done
-			
+			echo ${cols[@]}
 			#capture the data types of columns
 			declare -a dataTypes=()
 			for (( i=1;i<=$colNum;i++ ))
 			do
 				dataTypes[$i-1]=`head -2 ./Databases/$dbname/$tableName | tail -1 | cut -d: -f$i`
 			done
-			#echo ${dataTypes[@]}
+			echo ${dataTypes[@]}
 
             #-------------------------------------------------------------
             #We ask the user which column he wants to update
@@ -144,7 +144,7 @@ read tableName
                  then
                     #Data type of the column
                     typeset -i index
-                    for (( i=1;i<=$colNum;i++ ))
+                    for (( i=0;i<=$colNum;i++ ))
 			        do
                         if [[ "${cols[$i]}" =~ "${columnToBeUpdated}" ]]
                         then
@@ -154,38 +154,56 @@ read tableName
                             
                         fi
 			        done
-                    #echo $colData
+                    echo $colData
 
                     #increment the index by one since the record includes the primary key while the datatypes do not!
                     let index++
                     #Get the old value
                     numOfLine=`sed -n "1 ,/^$primary/p" ./Databases/$dbname/$tableName | wc -l`
-                    #echo $numOfLine
+                    echo $numOfLine
                     oldValue=`head -$numOfLine ./Databases/$dbname/$tableName | tail -1 | cut -d: -f$index`
-                    #echo $oldValue
-        
+                    echo $oldValue
+					echo $colData
                     #----------------------------------------------------------
                     clear
                     while true
                     do
                     echo "Please enter the new value:"
-					echo "For the Previous Menu, Press Enter"
+					echo "For the Previous Menu, Press 0"
                     read newValue
-					newVal=" "$newValue" "
+					newVal=$newValue
+						
 
-                    if [[ "$colData" =~ "string" ]]
+					 if [[ "$colData" =~ "string" ]]
                         then
                           case $newValue in
 					        +([a-zA-Z_]*[a-zA-Z0-9_*@-]) | +([a-zA-Z])) clear
-								sed -i -e "/^$primaryVar/s/$oldValue/$newVal/" ./Databases/$dbname/$tableName
-								echo "The record has successfully been updated!"
-								sed -n '1p' ./Databases/$dbname/$tableName
-               					sed -n "/^$primaryVar :/p" ./Databases/$dbname/$tableName
-								sleep 3
+								if  [[ " ${pkName} " =~ " ${columnToBeUpdated} " ]]
+                                then 
+                                    if [[ " ${allPK[@]} " =~ " $newValue " ]]
+                                    then
+                                        clear
+                                        echo "This primary key is already used"
+                                    else
+										sed -i -e "/^$primaryVar/s/$oldValue/$newVal /" ./Databases/$dbname/$tableName
+										echo "The record has successfully been updated!"
+										sed -n '1p' ./Databases/$dbname/$tableName
+										sed -n "/^$primaryVar :/p" ./Databases/$dbname/$tableName
+										sleep 3
+										let flagg++
+										break      
+                                    fi
+                                else
+                                    sed -i -e "/^$primaryVar/s/$oldValue/$newVal /" ./Databases/$dbname/$tableName
+									echo "The record has successfully been updated!"
+									sed -n '1p' ./Databases/$dbname/$tableName
+									sed -n "/^$primaryVar :/p" ./Databases/$dbname/$tableName
+									sleep 3
 									let flagg++
-								    break
+								    break                 
+                                fi
 								    ;;
-					        "")	clear 
+					        0)	clear 
 								while true
 								do
 								echo "By going back to the previous menu, this update will not be added! [yes or no]?"
@@ -210,13 +228,30 @@ read tableName
                     else
                          case $newValue in
 					        +([1-9]*[0-9]) | +([1-9])) clear
-						        sed -i -e "/^$primaryVar/s/$oldValue/$newVal/" ./Databases/$dbname/$tableName
-								echo "The record has successfully been updated!"
-								sed -n '1p' ./Databases/$dbname/$tableName
-               					sed -n "/^$primaryVar :/p" ./Databases/$dbname/$tableName
-								sleep 3
+						        if  [[ " ${pkName} " =~ " ${columnToBeUpdated} " ]]
+                                then 
+                                    if [[ " ${allPK[@]} " =~ " $newValue " ]]
+                                    then
+                                        clear
+                                        echo -e "\nThis primary key is already used"
+                                    else
+										sed -i -e "/^$primaryVar/s/$oldValue/$newVal /" ./Databases/$dbname/$tableName
+										echo "The record has successfully been updated!"
+										sed -n '1p' ./Databases/$dbname/$tableName
+										sed -n "/^$primaryVar :/p" ./Databases/$dbname/$tableName
+										sleep 3
 										let flagg++
-						                break
+										break      
+                                    fi
+                                else
+                                    sed -i -e "/^$primaryVar/s/$oldValue/$newVal /" ./Databases/$dbname/$tableName
+									echo "The record has successfully been updated!"
+									sed -n '1p' ./Databases/$dbname/$tableName
+									sed -n "/^$primaryVar :/p" ./Databases/$dbname/$tableName
+									sleep 3
+									let flagg++
+								    break                 
+                                fi
 						        	;;
 					        0) clear 
 							while true
