@@ -86,6 +86,13 @@ do
                     +([a-zA-Z_]*[a-zA-Z0-9_]))	
                         if [ -f ./Databases/$dbname/$tableName ]
                             then
+                                if [[ `cat ./Databases/$dbname/$tableName | wc -l` == 2 ]]
+                                then 
+                                clear
+                                echo "There are no records available!"
+                                sleep 2
+                                . ./select.sh
+                                fi
                              #----------------------------------------------------------
                                 #All the data we need to ask the user fo the primary key
 
