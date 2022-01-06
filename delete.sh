@@ -33,6 +33,13 @@ do
                         clear
                         if [ -f ./Databases/$dbname/$tableName ]
                             then
+                                if [[ `cat ./Databases/$dbname/$tableName | wc -l` == 2 ]]
+                                then 
+                                    clear
+                                    echo "There are no records available!"
+                                    sleep 2
+                                    . ./delete.sh
+                                fi
                              #----------------------------------------------------------
                                 #All the data we need to ask the user fo the primary key
 
@@ -60,10 +67,10 @@ do
                                 do 
                                 echo -e "======================================="
                                 echo -e "\t Table: $tableName"
-			        cat ./Databases/$dbname/$tableName | sed '2d' 
+			                    cat ./Databases/$dbname/$tableName | sed '2d' 
                                 echo -e "=======================================\n"
                                 echo "Please insert the primary key, for the previous menu, press 0"
-			        read primary
+			                    read primary
                                 #First we check if this primary key is already there
                                     if [[ " ${allPK[@]} " =~ " ${primary} " ]]
                                         then
@@ -74,11 +81,11 @@ do
                                                         +([a-zA-Z_]*[a-zA-Z0-9_*@]) | +([a-zA-Z])) clear 
                                                             while true
                                                             do
-				                                echo "Are you sure you want to delete this record! [yes|no]?"
-				                                read areYouSure
-				                                case ${areYouSure,,} in
+				                                            echo "Are you sure you want to delete this record! [yes|no]?"
+				                                            read areYouSure
+				                                            case ${areYouSure,,} in
 					                                "yes" | "y") clear
-								sed -i "/^$primary :/d" ./Databases/$dbname/$tableName
+								                                sed -i "/^$primary :/d" ./Databases/$dbname/$tableName
                                                                 echo "Record has been successfully deleted!"
                                                                 echo -e "\n======================================="
                                                                  echo -e "\t Table: $tableName"
@@ -86,12 +93,12 @@ do
                                                                 echo -e "=======================================\n"
                                                                 sleep 3
                                                                 break
-										;;
+									                        	;;
 				                                         "no" | "n") . ./second.sh
-										;;
+										                        ;;
 						                         *) clear
                                                     echo "Invalid Option!"
-										;;
+										                        ;;
 			                                	esac
                                                           done
                                                           break          
