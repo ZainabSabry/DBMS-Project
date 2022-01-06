@@ -110,14 +110,14 @@ read tableName
 			do
 				cols[$i-1]=`head -1 ./Databases/$dbname/$tableName | cut -d: -f$i`
 			done
-			echo ${cols[@]}
+			#echo ${cols[@]}
 			#capture the data types of columns
 			declare -a dataTypes=()
 			for (( i=1;i<=$colNum;i++ ))
 			do
 				dataTypes[$i-1]=`head -2 ./Databases/$dbname/$tableName | tail -1 | cut -d: -f$i`
 			done
-			echo ${dataTypes[@]}
+			#echo ${dataTypes[@]}
 
             #-------------------------------------------------------------
             #We ask the user which column he wants to update
@@ -154,16 +154,16 @@ read tableName
                             
                         fi
 			        done
-                    echo $colData
+                    #echo $colData
 
                     #increment the index by one since the record includes the primary key while the datatypes do not!
                     let index++
                     #Get the old value
                     numOfLine=`sed -n "1 ,/^$primary/p" ./Databases/$dbname/$tableName | wc -l`
-                    echo $numOfLine
+                    #echo $numOfLine
                     oldValue=`head -$numOfLine ./Databases/$dbname/$tableName | tail -1 | cut -d: -f$index`
-                    echo $oldValue
-					echo $colData
+                    #echo $oldValue
+					#echo $colData
                     #----------------------------------------------------------
                     clear
                     while true
@@ -185,6 +185,7 @@ read tableName
                                         clear
                                         echo "This primary key is already used"
                                     else
+										 clear
 										sed -i -e "/^$primaryVar/s/$oldValue/$newVal /" ./Databases/$dbname/$tableName
 										echo "The record has successfully been updated!"
 										sed -n '1p' ./Databases/$dbname/$tableName
@@ -194,6 +195,7 @@ read tableName
 										break      
                                     fi
                                 else
+									 clear
                                     sed -i -e "/^$primaryVar/s/$oldValue/$newVal /" ./Databases/$dbname/$tableName
 									echo "The record has successfully been updated!"
 									sed -n '1p' ./Databases/$dbname/$tableName
@@ -233,8 +235,9 @@ read tableName
                                     if [[ " ${allPK[@]} " =~ " $newValue " ]]
                                     then
                                         clear
-                                        echo -e "\nThis primary key is already used"
+                                        echo  "This primary key is already used"
                                     else
+										clear
 										sed -i -e "/^$primaryVar/s/$oldValue/$newVal /" ./Databases/$dbname/$tableName
 										echo "The record has successfully been updated!"
 										sed -n '1p' ./Databases/$dbname/$tableName
@@ -244,6 +247,7 @@ read tableName
 										break      
                                     fi
                                 else
+									clear
                                     sed -i -e "/^$primaryVar/s/$oldValue/$newVal /" ./Databases/$dbname/$tableName
 									echo "The record has successfully been updated!"
 									sed -n '1p' ./Databases/$dbname/$tableName
